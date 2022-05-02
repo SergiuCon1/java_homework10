@@ -3,6 +3,7 @@ package ru.netology.manager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.netology.Movie;
+import ru.netology.repository.RepositoryMoviePoster;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,113 +62,83 @@ class ManagerMoviePosterTest {
         assertArrayEquals(expected, actual);
     }
 
+
+    @DisplayName("Удаление фильма по id")
     @Test
-    @DisplayName("Добавление одного фильма в корзину и вывод в обратном от добавления порядке")
-    void shouldGetOneMoviesReverseOrder() {
-        ManagerMoviePoster poster = new ManagerMoviePoster();
+    void shouldRemoveMovieById() {
+        ManagerMoviePoster repo = new ManagerMoviePoster();
+        repo.addMovie(first);
+        repo.addMovie(second);
+        repo.addMovie(third);
+        repo.addMovie(fourth);
+        repo.addMovie(fifth);
+        repo.addMovie(sixth);
+        repo.addMovie(seventh);
 
-        poster.addMovie(third);
+        repo.removeById(4);
 
-        Movie[] expected = {third};
-        Movie[] actual = poster.findLast();
+        Movie[] expected = {first, second, third, fourth, sixth, seventh};
+        Movie[] actual = repo.findAll();
 
         assertArrayEquals(expected, actual);
     }
 
+    @DisplayName("Ищет фильм по id, когда он существует")
     @Test
-    @DisplayName("Добавление нескольких фильмов в корзину и вывод в обратном от добавления порядке")
-    void shouldGetSeveralMoviesReverseOrder() {
-        ManagerMoviePoster poster = new ManagerMoviePoster();
+    void shouldFindByIdWhenExist() {
+        ManagerMoviePoster repo = new ManagerMoviePoster();
+        repo.addMovie(first);
+        repo.addMovie(second);
+        repo.addMovie(third);
+        repo.addMovie(fourth);
+        repo.addMovie(fifth);
+        repo.addMovie(sixth);
+        repo.addMovie(seventh);
 
-        poster.addMovie(first);
-        poster.addMovie(second);
+        repo.findById(6);
 
-        Movie[] expected = {second, first};
-        Movie[] actual = poster.findLast();
+        Movie[] expected = {seventh};
+        Movie[] actual = repo.findAll();
 
         assertArrayEquals(expected, actual);
     }
 
+    @DisplayName("Ищет фильм по id, когда его не существует")
     @Test
-    @DisplayName("Добавление более трёх фильмов в корзину и вывод трёх фильмов в обратном от добавления порядке")
-    void shouldGetThreeMoviesWhenAddedMoreThanThreeReverseOrder() {
-        ManagerMoviePoster poster = new ManagerMoviePoster();
+    void shouldFindByIdWhenNotExist() {
+        ManagerMoviePoster repo = new ManagerMoviePoster();
+        repo.addMovie(first);
+        repo.addMovie(second);
+        repo.addMovie(third);
+        repo.addMovie(fourth);
+        repo.addMovie(fifth);
+        repo.addMovie(sixth);
+        repo.addMovie(seventh);
 
-        poster.addMovie(first);
-        poster.addMovie(second);
-        poster.addMovie(third);
-        poster.addMovie(fourth);
+        repo.findById(10);
 
-        Movie[] expected = {fourth, third, second};
-        Movie[] actual = poster.findLast();
+        Movie[] expected = {null};
+        Movie[] actual = repo.findAll();
 
         assertArrayEquals(expected, actual);
     }
 
+    @DisplayName("Удаляет все фильмы")
     @Test
-    @DisplayName("Добавление трёх фильмов в корзину и вывод трёх фильмов в обратном от добавления порядке")
-    void shouldGetThreeMoviesWhenAddedThreeMoviesReverseOrder() {
-        ManagerMoviePoster poster = new ManagerMoviePoster();
+    void shouldRemoveAll() {
+        ManagerMoviePoster repo = new ManagerMoviePoster();
+        repo.addMovie(first);
+        repo.addMovie(second);
+        repo.addMovie(third);
+        repo.addMovie(fourth);
+        repo.addMovie(fifth);
+        repo.addMovie(sixth);
+        repo.addMovie(seventh);
 
-        poster.addMovie(first);
-        poster.addMovie(second);
-        poster.addMovie(third);
+        repo.removeAll();
 
-        Movie[] expected = {third, second, first};
-        Movie[] actual = poster.findLast();
-
-        assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("Добавление четырёх фильмов в корзину и вывод четырёх фильмов в обратном от добавления порядке")
-    void shouldGetFourMoviesWhenLimitIsFiveReverseOrder() {
-        ManagerMoviePoster poster = new ManagerMoviePoster(5);
-
-        poster.addMovie(first);
-        poster.addMovie(second);
-        poster.addMovie(third);
-        poster.addMovie(fourth);
-
-        Movie[] expected = {fourth, third, second, first};
-        Movie[] actual = poster.findLast();
-
-        assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("Добавление пяти фильмов в корзину и вывод пяти в обратном от добавления порядке")
-    void shouldGetFiveMoviesWhenLimitIsFiveReverseOrder() {
-        ManagerMoviePoster poster = new ManagerMoviePoster(5);
-
-        poster.addMovie(first);
-        poster.addMovie(second);
-        poster.addMovie(third);
-        poster.addMovie(fourth);
-        poster.addMovie(fifth);
-
-
-        Movie[] expected = {fifth, fourth, third, second, first};
-        Movie[] actual = poster.findLast();
-
-        assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("Добавление более пяти фильмов в корзину и вывод пяти фильмов в обратном от добавления порядке")
-    void shouldGetFiveMoviesWhenAddedMoreThanFiveReverseOrder() {
-        ManagerMoviePoster poster = new ManagerMoviePoster(5);
-
-        poster.addMovie(first);
-        poster.addMovie(second);
-        poster.addMovie(third);
-        poster.addMovie(fourth);
-        poster.addMovie(fifth);
-        poster.addMovie(sixth);
-        poster.addMovie(seventh);
-
-        Movie[] expected = {seventh, sixth, fifth, fourth, third};
-        Movie[] actual = poster.findLast();
+        Movie[] expected = {};
+        Movie[] actual = repo.findAll();
 
         assertArrayEquals(expected, actual);
     }
